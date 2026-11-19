@@ -1,15 +1,14 @@
-import TopBar from "@/components/TopBar";
+import AppHeader from "@/components/AppHeader";
 import Wall from "@/components/Wall";
 
 export default function Home() {
   return (
-    <>
+    <div id="top" className="app">
       <a className="skip-link" href="#message">
         Skip to write a post
       </a>
-      <TopBar />
+      <AppHeader />
       <Wall />
-      <footer className="footer">My Wall · Test 2</footer>
-    </>
+    </div>
   );
 }

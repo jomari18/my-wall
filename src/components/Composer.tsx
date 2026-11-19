@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Avatar from "./Avatar";
 import PhotoPicker from "./PhotoPicker";
 import { createPost, uploadPhoto, validatePhoto, type Post } from "@/lib/posts";
 import { DEFAULT_NAME, MAX_MESSAGE_LENGTH, MAX_NAME_LENGTH } from "@/lib/constants";
@@ -11,7 +12,7 @@ type ComposerProps = {
 
 type Status = "idle" | "uploading" | "saving";
 
-/** The "Write something..." box at the top of the wall. */
+/** The "write something" card at the top of the wall. */
 export default function Composer({ onPosted }: ComposerProps) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
@@ -60,21 +61,22 @@ export default function Composer({ onPosted }: ComposerProps) {
   }
 
   const buttonLabel =
-    status === "uploading" ? "Uploading photo…" : status === "saving" ? "Sharing…" : "Share";
+    status === "uploading" ? "Uploading…" : status === "saving" ? "Sharing…" : "Share";
 
   return (
-    <form id="share" className="composer" onSubmit={handleSubmit} aria-busy={isBusy}>
-      <div className="composer__row">
-        <label htmlFor="name" className="composer__label">
+    <form className="composer" onSubmit={handleSubmit} aria-busy={isBusy}>
+      <div className="composer__author">
+        <Avatar name={name || DEFAULT_NAME} size={34} />
+        <label htmlFor="name" className="visually-hidden">
           Your name
         </label>
         <input
           id="name"
-          className="input"
+          className="composer__name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder={DEFAULT_NAME}
+          placeholder={`Your name (${DEFAULT_NAME})`}
           maxLength={MAX_NAME_LENGTH}
           autoComplete="nickname"
           disabled={isBusy}
@@ -86,10 +88,10 @@ export default function Composer({ onPosted }: ComposerProps) {
       </label>
       <textarea
         id="message"
-        className="input composer__message"
+        className="composer__message"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="Write something…"
+        placeholder="What's on your mind?"
         rows={3}
         aria-describedby="char-count"
         aria-invalid={isTooLong}
@@ -116,7 +118,7 @@ export default function Composer({ onPosted }: ComposerProps) {
           aria-live="polite"
         >
           {isTooLong
-            ? `${-remaining} character${remaining === -1 ? "" : "s"} over the limit`
+            ? `${-remaining} over the limit`
             : `${remaining} character${remaining === 1 ? "" : "s"} left`}
         </span>
         <button type="submit" className="button" disabled={!canShare}>

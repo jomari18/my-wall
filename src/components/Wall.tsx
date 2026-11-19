@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import BottomNav from "./BottomNav";
 import Composer from "./Composer";
 import PostList from "./PostList";
-import ProfileSidebar from "./ProfileSidebar";
+import Stories from "./Stories";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 import { fetchPosts, type Post } from "@/lib/posts";
 
@@ -56,19 +57,26 @@ export default function Wall() {
   }, [loadPosts, addPost]);
 
   return (
-    <div className="layout">
-      <ProfileSidebar postCount={loading || error ? null : posts.length} />
-
-      <main id="wall" className="wall">
-        <h1 className="wall__title">My Wall</h1>
+    <>
+      <Stories posts={posts} />
+      <main className="wall">
         <Composer onPosted={addPost} />
+
         <section aria-labelledby="feed-heading">
-          <h2 id="feed-heading" className="wall__section-title">
-            Wall posts
-          </h2>
+          <div className="feed-tabs">
+            <h2 id="feed-heading" className="feed-tabs__active">
+              Latest
+            </h2>
+            {!loading && !error && (
+              <span className="feed-tabs__count">
+                {posts.length} post{posts.length === 1 ? "" : "s"}
+              </span>
+            )}
+          </div>
           <PostList posts={posts} loading={loading} error={error} onRetry={loadPosts} />
         </section>
       </main>
-    </div>
+      <BottomNav />
+    </>
   );
 }

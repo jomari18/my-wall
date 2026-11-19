@@ -10,7 +10,7 @@ type PhotoPickerProps = {
   onRemove: () => void;
 };
 
-/** "Attach photo" button, and a preview of the chosen photo before sharing. */
+/** "Add photo" button, and a preview of the chosen photo before sharing. */
 export default function PhotoPicker({ photo, disabled, onPick, onRemove }: PhotoPickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -44,37 +44,40 @@ export default function PhotoPicker({ photo, disabled, onPick, onRemove }: Photo
         onChange={handleChange}
         disabled={disabled}
       />
-      {!photo && (
-        <label htmlFor="photo" className={`link-button${disabled ? " is-disabled" : ""}`}>
-          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M2 3h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm0 8.5h12L10 7l-3 3.5L5 8.5zM5 7a1.25 1.25 0 1 0 0-2.5A1.25 1.25 0 0 0 5 7z"
-            />
-          </svg>
-          Attach photo
-        </label>
-      )}
 
-      {photo && previewUrl && (
+      {photo && previewUrl ? (
+        // Styled like the design's photo card: dark chip top-right, cream tag bottom-left.
         <div className="photo-preview">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={previewUrl} alt="Preview of the photo you chose" />
-          <div className="photo-preview__info">
-            <span className="photo-preview__name">{photo.name}</span>
-            <button
-              type="button"
-              className="link-button"
-              onClick={() => {
-                onRemove();
-                inputRef.current?.focus();
-              }}
-              disabled={disabled}
-            >
-              Remove photo
-            </button>
-          </div>
+          <button
+            type="button"
+            className="chip chip--dark photo-preview__remove"
+            onClick={() => {
+              onRemove();
+              inputRef.current?.focus();
+            }}
+            disabled={disabled}
+          >
+            Remove
+          </button>
+          <span className="chip chip--light photo-preview__name">{photo.name}</span>
         </div>
+      ) : (
+        <label htmlFor="photo" className={`pill-button${disabled ? " is-disabled" : ""}`}>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none">
+            <rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" strokeWidth="1.7" />
+            <circle cx="9" cy="10" r="1.6" fill="currentColor" />
+            <path
+              d="M4 17l5-4.5 3.5 3 3-2.5L20 17"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Add photo
+        </label>
       )}
     </div>
   );

@@ -13,7 +13,7 @@ type PostListProps = {
 
 /** The feed, plus its loading, error and empty states. */
 export default function PostList({ posts, loading, error, onRetry }: PostListProps) {
-  // Re-render every 30 seconds so "5 minutes ago" stays accurate.
+  // Re-render every 30 seconds so "5 min ago" stays accurate.
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 30_000);
@@ -23,7 +23,8 @@ export default function PostList({ posts, loading, error, onRetry }: PostListPro
   if (loading) {
     return (
       <div className="feed-state" role="status">
-        <span className="spinner" aria-hidden="true" /> Loading posts…
+        <span className="spinner" aria-hidden="true" />
+        <p>Loading posts…</p>
       </div>
     );
   }
@@ -32,7 +33,7 @@ export default function PostList({ posts, loading, error, onRetry }: PostListPro
     return (
       <div className="notice notice--error" role="alert">
         <p>{error}</p>
-        <button type="button" className="button button--light" onClick={onRetry}>
+        <button type="button" className="button button--ghost" onClick={onRetry}>
           Try again
         </button>
       </div>
@@ -41,8 +42,8 @@ export default function PostList({ posts, loading, error, onRetry }: PostListPro
 
   if (posts.length === 0) {
     return (
-      <div className="feed-state feed-state--empty">
-        <p className="feed-state__title">No posts yet.</p>
+      <div className="feed-state">
+        <p className="feed-state__title">Nothing here yet</p>
         <p>Be the first to write something on this wall.</p>
       </div>
     );

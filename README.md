@@ -1,6 +1,6 @@
 # Test 2: My Wall
 
-A 2008-style public wall. Anyone can type a name and a message (and attach a photo), press **Share**, and see every post newest first. New posts appear live, without a refresh.
+A public wall, styled after the Figma "Home feed" design (cream background, Inter, orange accent, story rings, rounded photo cards). Anyone can type a name and a message (and attach a photo), press **Share**, and see every post newest first. New posts appear live, without a refresh.
 
 **Stack:** Next.js 15 (App Router, TypeScript) · Supabase (Postgres, Realtime, Storage) · Vercel
 
